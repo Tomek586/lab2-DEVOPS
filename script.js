@@ -18,3 +18,25 @@ function changeSize(event) {
 // Dodaj nasłuchiwacz zdarzeń
 animatedText.addEventListener('click', changeSize);
 
+async function fetchUsers() {
+  try {
+    const response = await fetch('http://localhost:3000/api/users');
+    const users = await response.json();
+    
+    const userList = document.getElementById('user-list');
+    userList.innerHTML = '';
+    
+    users.forEach(user => {
+      const li = document.createElement('li');
+      li.textContent = `${user.name} - ${user.email}`;
+      userList.appendChild(li);
+    });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+  }
+}
+
+// Wywołaj funkcję przy załadowaniu strony
+window.onload = fetchUsers;
+
+

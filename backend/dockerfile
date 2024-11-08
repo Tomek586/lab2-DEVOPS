@@ -1,0 +1,16 @@
+# Wybierz obraz Node.js
+FROM node:16
+
+# Ustaw katalog roboczy
+WORKDIR /app
+
+# Skopiuj pliki i zainstaluj zależności
+COPY package*.json ./
+RUN npm install
+
+# Skopiuj kod aplikacji
+COPY . .
+
+# Uruchom serwer
+CMD ["node", "server.js"]
+
