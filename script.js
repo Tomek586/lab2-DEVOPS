@@ -1,42 +1,50 @@
 const animatedText = document.getElementById('animatedText');
+const clickableText = document.getElementById('clickableText');
 
-// Ustawienia powiększenia
-let scale = 1;
+// Ustawienia powiększenia dla obu napisów
+let scaleMainText = 1;
+let scaleClickableText = 1;
 
-// Funkcja do zmiany rozmiaru tekstu
-function changeSize(event) {
+// Funkcja do zmiany rozmiaru głównego tekstu
+function changeMainTextSize(event) {
     if (event.detail === 1) {
         // Jedno kliknięcie - powiększ
-        scale += 0.2;
+        scaleMainText += 0.2;
     } else if (event.detail === 2) {
         // Dwa kliknięcia - pomniejsz
-        scale = Math.max(1, scale - 0.2); // Minimalny rozmiar to 1
+        scaleMainText = Math.max(1, scaleMainText - 0.2); // Minimalny rozmiar to 1
     }
-    animatedText.style.transform = `scale(${scale})`;
+    animatedText.style.transform = `scale(${scaleMainText})`;
 }
 
-// Dodaj nasłuchiwacz zdarzeń
-animatedText.addEventListener('click', changeSize);
+// Funkcja do zmiany rozmiaru klikalnego tekstu
+function changeClickableTextSize(event) {
+    scaleClickableText += 0.2; // Powiększ za każdym kliknięciem
+    clickableText.style.transform = `scale(${scaleClickableText})`;
+}
 
+// Dodaj nasłuchiwacze zdarzeń
+animatedText.addEventListener('click', changeMainTextSize);
+clickableText.addEventListener('click', changeClickableTextSize);
+
+// Funkcja do pobierania użytkowników (opcjonalna część)
 async function fetchUsers() {
-  try {
-    const response = await fetch('http://localhost:3000/api/users');
-    const users = await response.json();
-    
-    const userList = document.getElementById('user-list');
-    userList.innerHTML = '';
-    
-    users.forEach(user => {
-      const li = document.createElement('li');
-      li.textContent = `${user.name} - ${user.email}`;
-      userList.appendChild(li);
-    });
-  } catch (error) {
-    console.error('Error fetching users:', error);
-  }
+    try {
+        const response = await fetch('http://localhost:3000/api/users');
+        const users = await response.json();
+        
+        const userList = document.getElementById('user-list');
+        userList.innerHTML = '';
+        
+        users.forEach(user => {
+            const li = document.createElement('li');
+            li.textContent = `${user.name} - ${user.email}`;
+            userList.appendChild(li);
+        });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
 }
 
 // Wywołaj funkcję przy załadowaniu strony
 window.onload = fetchUsers;
-
-
